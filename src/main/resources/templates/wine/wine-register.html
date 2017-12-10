@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="pt"
+    xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:th="http://www.thymeleaf.org"
+    xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+    layout:decorate="~{layout/standard-layout}">
+<head>
+	<link rel="stylesheet" type="text/css" th:href="@{/layout/stylesheets/vendors.min.css}" />
+</head>
+
+<body>
+	<section layout:fragment="conteudo">
+		<div class="page-header">
+			<div class="container-fluid">
+				<div class="row">
+					<div class="col-xs-8">
+						<h1>
+							Cadastro vinho
+						</h1>
+					</div>
+
+					<div class="col-xs-4">
+						<div class="aw-page-header-controls">
+							<a class="btn btn-primary" th:href="@{/wine}">
+								<i class="fa fa-table"></i>
+								<span class="hidden-xs hidden-sm">Lista vinhos</span>
+							</a>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<div class="container-fluid">
+			<form method="POST" class="form-vertical  js-form-loading"
+				th:object="${wine}" th:action="@{/wine/new}">
+                <div class="alert  alert-danger  alert-dismissible" role="alert"
+                	th:if="${#fields.hasAnyErrors()}">
+					<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+	
+					<div th:each="erro: ${#fields.detailedErrors()}">
+						<i class="fa fa-exclamation-circle"></i>
+						
+						<span th:text="${erro.message}">Mensagem erro.</span>
+					</div>
+				</div>
+					
+				<div class="alert  alert-success"
+					th:if="${!#strings.isEmpty(message)}">
+					<i class="fa fa-check-circle"></i>
+	
+					<span th:text="${message}">Mensagem sucesso!</span>
+				</div>
+									
+				<div class="form-group">
+					<label for="nome">Nome</label>
+
+					<input id="nome" type="text" class="form-control" 
+							th:field="*{name}"/>
+				</div>
+
+				<div class="row">
+					<div class="col-sm-6">
+						<div class="form-group">
+							<label for="tipo">Tipo</label>
+
+							<select id="tipo" class="form-control"
+								th:field="*{wineType}">
+								<option value="">Selecione o tipo</option>
+								<option th:each="wineType: ${types}"
+									th:value="${wineType}" th:text="#{|wineType.${wineType}|}">Opção 1</option>
+							</select>
+						</div>
+					</div>
+
+					<div class="col-sm-6">
+						<div class="form-group">
+							<label for="valor">Valor</label>
+								
+							<input id="valor" type="text" class="form-control js-moeda" 
+								th:field="*{value}"/>
+						</div>
+					</div>
+				</div>
+
+				<div class="form-group">
+					<button class="btn  btn-primary" type="submit">Salvar</button>
+				</div>
+			</form>
+		</div>
+	</section>
+
+</body>
+</html>
